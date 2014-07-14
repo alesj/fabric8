@@ -16,6 +16,7 @@
 package io.fabric8.docker.provider;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -107,6 +108,7 @@ public final class DockerContainerProvider extends AbstractComponent implements 
     private DockerFactory dockerFactory = new DockerFactory();
     private Docker docker;
     private int externalPortCounter;
+    private final Object portLock = new Object();
 
     private final ExecutorService downloadExecutor = Executors.newSingleThreadExecutor();
     private Timer keepAliveTimer;
@@ -116,9 +118,7 @@ public final class DockerContainerProvider extends AbstractComponent implements 
         List<String> warnings = new ArrayList<String>();
         String[] warningArray = status.getWarnings();
         if (warningArray != null) {
-            for (String warning : warningArray) {
-                warnings.add(warning);
-            }
+            Collections.addAll(warnings, warningArray);
         }
         return new CreateDockerContainerMetadata(status.getId(), warnings);
     }
@@ -424,21 +424,23 @@ public final class DockerContainerProvider extends AbstractComponent implements 
     }
 
     protected int createExternalPort(String containerId, String portKey, Set<Integer> usedPortByHost, CreateDockerContainerOptions options) {
-        while (true) {
-            if (externalPortCounter <= 0) {
-                externalPortCounter = options.getMinimumPort();
-                if (externalPortCounter == 0) {
-                    externalPortCounter = DockerConstants.DEFAULT_EXTERNAL_PORT;
+        synchronized (portLock) {
+            while (true) {
+                if (externalPortCounter <= 0) {
+                    externalPortCounter = options.getMinimumPort();
+                    if (externalPortCounter == 0) {
+                        externalPortCounter = DockerConstants.DEFAULT_EXTERNAL_PORT;
+                    }
+                } else {
+                    externalPortCounter++;
                 }
-            } else {
-                externalPortCounter++;
-            }
-            if (!usedPortByHost.contains(externalPortCounter)) {
-                Container container = getFabricService().getCurrentContainer();
-                String pid = ChildConstants.PORTS_PID;
-                String key = containerId + "-" + portKey;
-                getFabricService().getPortService().registerPort(container, pid, key, externalPortCounter);
-                return externalPortCounter;
+                if (!usedPortByHost.contains(externalPortCounter)) {
+                    Container container = getFabricService().getCurrentContainer();
+                    String pid = ChildConstants.PORTS_PID;
+                    String key = containerId + "-" + portKey;
+                    getFabricService().getPortService().registerPort(container, pid, key, externalPortCounter);
+                    return externalPortCounter;
+                }
             }
         }
     }
@@ -485,8 +487,12 @@ public final class DockerContainerProvider extends AbstractComponent implements 
     protected Set<Integer> findUsedPortByHostAndDocker() {
         FabricService fabric = getFabricService();
         Container currentContainer = fabric.getCurrentContainer();
-        Set<Integer> usedPorts = fabric.getPortService().findUsedPortByHost(currentContainer);
-        Set<Integer> dockerPorts = Dockers.getUsedPorts(docker);
+        Set<Integer> usedPorts;
+        Set<Integer> dockerPorts;
+        synchronized (portLock) {
+            usedPorts = fabric.getPortService().findUsedPortByHost(currentContainer);
+            dockerPorts = Dockers.getUsedPorts(docker);
+        }
         usedPorts.addAll(dockerPorts);
         return usedPorts;
     }
