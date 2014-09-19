@@ -610,14 +610,6 @@
                 <version>${jgit-version}</version>
             </dependency>
 
-            <!-- Fab (deprecated) -->
-
-            <dependency>
-                <groupId>io.fabric8.fab</groupId>
-                <artifactId>fab-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
             <!-- Fabric -->
             <dependency>
                 <groupId>io.fabric8</groupId>
@@ -898,11 +890,6 @@
             <dependency>
                 <groupId>io.fabric8</groupId>
                 <artifactId>fabric-kubernetes-provider</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.fabric8.fab</groupId>
-                <artifactId>fab-osgi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -3771,7 +3758,6 @@
 
         <module>apm</module>
         <module>common-util</module>
-        <module>fab</module>
         <module>fabric</module>
         <module>fabric8-maven-plugin</module>
         <module>gateway</module>

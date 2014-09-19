@@ -15,8 +15,6 @@
  */
 package io.fabric8.agent;
 
-import io.fabric8.fab.osgi.FabBundleInfo;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,23 +35,6 @@ public interface StreamProvider {
         @Override
         public InputStream open() throws IOException {
             return new FileInputStream(file);
-        }
-    }
-
-    public static class Fab implements StreamProvider {
-        private final FabBundleInfo fab;
-
-        public Fab(FabBundleInfo fab) {
-            this.fab = fab;
-        }
-
-        @Override
-        public InputStream open() throws IOException {
-            try {
-                return fab.getInputStream();
-            } catch (Exception e) {
-                throw new IOException("Unable to create input stream for fab", e);
-            }
         }
     }
 }

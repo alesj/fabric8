@@ -115,7 +115,7 @@ public class InstallDeploymentsTask implements InstallTask {
                     // we can't use the 'checksum' value as its using the source file not the destFile
                     FileChangeInfo changeInfo = installContext.createChangeInfo(destFile);
                     LOG.debug("Copying file " + fileName + " to :  " + destFile.getCanonicalPath());
-                    org.codehaus.plexus.util.FileUtils.copyFile(file, destFile);
+                    org.apache.commons.io.FileUtils.copyFile(file, destFile);
                     installContext.onDeploymentFileWrite(location, destFile, changeInfo, isSharedLibrary);
                 }
             }

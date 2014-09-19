@@ -233,11 +233,6 @@
             io.fabric8.agent.sort;
             io.fabric8.agent.utils;
             io.fabric8.common.util;
-            io.fabric8.fab;
-            io.fabric8.fab.osgi;
-            io.fabric8.fab.osgi.bnd;
-            io.fabric8.fab.osgi.internal;
-            io.fabric8.fab.osgi.util;
             io.fabric8.maven.impl;
             io.fabric8.utils;
             io.fabric8.utils.features;
@@ -379,15 +374,6 @@
             <artifactId>bndlib</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>io.fabric8.fab</groupId>
-            <artifactId>fab-osgi</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.fabric8.fab</groupId>
-            <artifactId>fab-core</artifactId>
-        </dependency>
         <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>common-util</artifactId>

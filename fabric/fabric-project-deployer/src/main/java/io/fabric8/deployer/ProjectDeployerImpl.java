@@ -69,6 +69,7 @@ import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.ConfigurationPolicy;
@@ -79,7 +80,6 @@ import org.apache.felix.scr.annotations.Service;
 import org.apache.karaf.features.BundleInfo;
 import org.apache.karaf.features.Feature;
 import org.apache.karaf.features.internal.RepositoryImpl;
-import org.codehaus.plexus.util.IOUtil;
 import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -649,7 +649,7 @@ public final class ProjectDeployerImpl extends AbstractComponent implements Proj
             @Override
             public void run() {
                 try {
-                    String md = IOUtil.toString(new URL("http://central.maven.org/maven2/org/apache/servicemix/bundles/").openStream());
+                    String md = IOUtils.toString(new URL("http://central.maven.org/maven2/org/apache/servicemix/bundles/").openStream());
                     Matcher matcher = Pattern.compile("<a href=\"(org\\.apache\\.servicemix\\.bundles\\.[^\"]*)/\">").matcher(md);
                     while (matcher.find()) {
                         final String artifactId = matcher.group(1);
@@ -660,7 +660,7 @@ public final class ProjectDeployerImpl extends AbstractComponent implements Proj
                             @Override
                             public void run() {
                                 try {
-                                    String mda = IOUtil.toString(new URL("http://central.maven.org/maven2/org/apache/servicemix/bundles/" + artifactId).openStream());
+                                    String mda = IOUtils.toString(new URL("http://central.maven.org/maven2/org/apache/servicemix/bundles/" + artifactId).openStream());
                                     Matcher matcher = Pattern.compile("<a href=\"([^\\.][^\"]*)/\">").matcher(mda);
                                     while (matcher.find()) {
                                         final String version = matcher.group(1);
@@ -671,7 +671,7 @@ public final class ProjectDeployerImpl extends AbstractComponent implements Proj
                                             @Override
                                             public void run() {
                                                 try {
-                                                    String pom = IOUtil.toString(new URL("http://central.maven.org/maven2/org/apache/servicemix/bundles/" + artifactId + "/" + version + "/" + artifactId + "-" + version + ".pom").openStream());
+                                                    String pom = IOUtils.toString(new URL("http://central.maven.org/maven2/org/apache/servicemix/bundles/" + artifactId + "/" + version + "/" + artifactId + "-" + version + ".pom").openStream());
                                                     String pkgGroupId = extract(pom, "<pkgGroupId>(.*)</pkgGroupId>");
                                                     String pkgArtifactId = extract(pom, "<pkgArtifactId>(.*)</pkgArtifactId>");
                                                     String pkgVersion = extract(pom, "<pkgVersion>(.*)</pkgVersion>");

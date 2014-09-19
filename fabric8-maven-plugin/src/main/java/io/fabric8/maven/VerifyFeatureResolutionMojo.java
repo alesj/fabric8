@@ -35,7 +35,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -43,13 +42,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.jar.Attributes;
 import java.util.regex.Pattern;
 
-import io.fabric8.agent.DeploymentAgent;
 import io.fabric8.agent.DeploymentBuilder;
 import io.fabric8.agent.download.DownloadManager;
 import io.fabric8.agent.mvn.DictionaryPropertyResolver;
@@ -58,18 +55,12 @@ import io.fabric8.agent.mvn.MavenSettingsImpl;
 import io.fabric8.agent.repository.HttpMetadataProvider;
 import io.fabric8.agent.repository.MetadataRepository;
 import io.fabric8.agent.resolver.ResourceBuilder;
-import io.fabric8.api.data.BundleInfo;
 import io.fabric8.common.util.MultiException;
-import io.fabric8.fab.osgi.internal.FabResolverFactoryImpl;
 import org.apache.felix.utils.version.VersionRange;
 import org.apache.karaf.deployer.blueprint.BlueprintTransformer;
-import org.apache.karaf.deployer.blueprint.BlueprintURLHandler;
-import org.apache.karaf.features.Conditional;
 import org.apache.karaf.features.ConfigFileInfo;
 import org.apache.karaf.features.Feature;
 import org.apache.karaf.features.Repository;
-import org.apache.karaf.features.internal.FeatureImpl;
-import org.apache.karaf.features.internal.FeaturesServiceImpl;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -251,7 +242,6 @@ public class VerifyFeatureResolutionMojo extends AbstractMojo {
 
             DeploymentBuilder builder = new DeploymentBuilder(
                     manager,
-                    null,
                     repositories.values(),
                     -1 // Disable url handlers
             );

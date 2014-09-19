@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -35,24 +34,19 @@ import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import io.fabric8.common.util.ChecksumUtils;
 import io.fabric8.common.util.FileChangeInfo;
-import io.fabric8.common.util.Filter;
 import io.fabric8.common.util.Pair;
 import io.fabric8.common.util.Strings;
-import io.fabric8.fab.DependencyFilters;
-import io.fabric8.fab.DependencyTreeResult;
-import io.fabric8.fab.MavenResolverImpl;
 import io.fabric8.process.manager.InstallContext;
 import io.fabric8.process.manager.InstallOptions;
 import io.fabric8.process.manager.InstallTask;
 import io.fabric8.process.manager.config.ProcessConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.resolution.ArtifactResolutionException;
-
-import static io.fabric8.common.util.Strings.join;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  */
@@ -60,7 +54,7 @@ public class JarInstaller implements InstallTask {
 
     private static final Logger LOG = LoggerFactory.getLogger(JarInstaller.class);
 
-    MavenResolverImpl mavenResolver = new MavenResolverImpl();
+    private final RepositorySystem mavenResolver = null; // TODO
     private final InstallOptions parameters;
     private final Executor executor;
 
@@ -135,6 +129,7 @@ public class JarInstaller implements InstallTask {
 
     protected void copyArtifactAndDependencies(ProcessConfig config, String id, File installDir, InstallOptions parameters, File libDir, Map<String, Pair<File, File>> copyFiles) throws Exception {
         URL artifactUrl = parameters.getUrl();
+        /*
         // now lets download the executable jar as main.jar and all its dependencies...
         Filter<Dependency> optionalFilter = DependencyFilters.parseExcludeOptionalFilter(join(Arrays.asList(parameters.getOptionalDependencyPatterns()), " "));
         Filter<Dependency> excludeFilter = DependencyFilters.parseExcludeFilter(join(Arrays.asList(parameters.getExcludeDependencyFilterPatterns()), " "), optionalFilter);
@@ -149,6 +144,12 @@ public class JarInstaller implements InstallTask {
                 mainPomArtifact.getGroupId(), mainPomArtifact.getArtifactId(),
                 mainPomArtifact.getVersion(), mainPomArtifact.getClassifier(), "jar").
                 getFile();
+
+        */
+
+        DependencyNode mainJarDependency = null;
+        File mainJar = null; // TODO
+
         if (mainJar == null) {
             System.out.println("Cannot find file for main jar " + mainJarDependency);
         } else {
@@ -233,7 +234,7 @@ public class JarInstaller implements InstallTask {
                 if (artifact != null) {
                     File file = artifact.getFile();
                     if (file == null) {
-                        return mavenResolver.resolveFile(artifact);
+                        // return mavenResolver.resolveFile(artifact); // TODO
                     }
                     return file;
                 }

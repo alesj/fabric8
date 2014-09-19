@@ -245,10 +245,6 @@
                <artifactId>fabric-zookeeper</artifactId>
            </dependency>
            <dependency>
-               <groupId>io.fabric8.fab</groupId>
-               <artifactId>fab-osgi</artifactId>
-           </dependency>
-           <dependency>
                 <groupId>io.fabric8.insight</groupId>
                 <artifactId>insight-elasticsearch-factory</artifactId>
            </dependency>
@@ -458,7 +454,7 @@
                        </execution>
                    </executions>
                </plugin>
-               <plugin>
+               <!-- plugin>
                    <groupId>io.fabric8</groupId>
                    <artifactId>fabric8-maven-plugin</artifactId>
                    <version>${project.version}</version>
@@ -481,7 +477,7 @@
                            </configuration>
                        </execution>
                    </executions>
-               </plugin>
+               </plugin -->
                <plugin>
                    <groupId>org.apache.karaf.tooling</groupId>
                    <artifactId>features-maven-plugin</artifactId>
@@ -855,7 +851,7 @@
             <id>verify-features</id>
             <build>
                 <plugins>
-                    <plugin>
+                    <!-- plugin>
                         <groupId>io.fabric8</groupId>
                         <artifactId>fabric8-maven-plugin</artifactId>
                         <version>${project.version}</version>
@@ -880,7 +876,7 @@
                                 </configuration>
                             </execution>
                         </executions>
-                    </plugin>
+                    </plugin -->
                 </plugins>
             </build>
         </profile>

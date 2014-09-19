@@ -17,7 +17,6 @@ package io.fabric8.agent.resolver;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,15 +28,15 @@ import java.util.concurrent.Executors;
 
 import aQute.bnd.osgi.Macro;
 import aQute.bnd.osgi.Processor;
-import org.apache.felix.framework.Felix;
-import org.apache.felix.utils.version.VersionRange;
-import org.apache.karaf.features.Repository;
 import io.fabric8.agent.DeploymentBuilder;
 import io.fabric8.agent.download.DownloadManager;
 import io.fabric8.agent.mvn.MavenConfigurationImpl;
 import io.fabric8.agent.mvn.MavenSettingsImpl;
 import io.fabric8.agent.mvn.PropertiesPropertyResolver;
 import io.fabric8.agent.utils.AgentUtils;
+import org.apache.felix.framework.Felix;
+import org.apache.felix.utils.version.VersionRange;
+import org.apache.karaf.features.Repository;
 import org.junit.Test;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.wiring.BundleRevision;
@@ -67,7 +66,7 @@ public class ResolverTest {
         Map<URI, Repository> repositories = new HashMap<URI, Repository>();
         AgentUtils.addRepository(manager, repositories, URI.create("mvn:org.apache.karaf.assemblies.features/standard/" + System.getProperty("karaf-version") + "/xml/features"));
 
-        DeploymentBuilder builder = new DeploymentBuilder(manager, null, repositories.values(), 0);
+        DeploymentBuilder builder = new DeploymentBuilder(manager, repositories.values(), 0);
 
         builder.download(new HashSet<String>(Arrays.asList("karaf-framework", "ssh")),
                          Collections.<String>emptySet(),
